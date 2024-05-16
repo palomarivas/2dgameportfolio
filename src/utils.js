@@ -1,40 +1,43 @@
-export function displayDialogue(text, onDisplayEnd) {
-    const dialogueUI = document.getElementById("textbox-container");
-    const dialogue = document.getElementById("dialogue");
+import { getDialogue } from "./constants";
 
-    dialogueUI.style.display = "block";
+export function displayDialogue(key, onDisplayEnd) {
+  const dialogueUI = document.getElementById("textbox-container");
+  const dialogue = document.getElementById("dialogue");
+  const text = getDialogue(key); // Retrieve translation using the provided key
 
-    let index = 0;
-    let currentText = "";
-    const intervalRef = setInterval (() => {
-        if (index < text.length) {
-            currentText += text[index];
-            dialogue.innerHTML = currentText;
-            index++;
-            return;
-        }
-        clearInterval(intervalRef);
-    }, 5);
+  dialogueUI.style.display = "block";
 
-    const closeBtn = document.getElementById("close");
-
-    function onCloseBtnClick() {
-        onDisplayEnd();
-        dialogueUI.style.display = "none";
-        dialogue.innerHTML = "";
-        clearInterval(intervalRef);
-        closeBtn.removeEventListener("click", onCloseBtnClick);
+  let index = 0;
+  let currentText = "";
+  const intervalRef = setInterval (() => {
+    if (index < text.length) {
+      currentText += text[index];
+      dialogue.innerHTML = currentText;
+      index++;
+      return;
     }
+    clearInterval(intervalRef);
+  }, 5);
 
-    closeBtn.addEventListener("click", onCloseBtnClick);
+  const closeBtn = document.getElementById("close");
+
+  function onCloseBtnClick() {
+    onDisplayEnd();
+    dialogueUI.style.display = "none";
+    dialogue.innerHTML = "";
+    clearInterval(intervalRef);
+    closeBtn.removeEventListener("click", onCloseBtnClick);
+  }
+
+  closeBtn.addEventListener("click", onCloseBtnClick);
 }
 
 export function setCamScale(k) {
-    const resizeFactor = k.width() / k.height();
-    if (resizeFactor < 1) {
-        k.camScale(k.vec2(1));
-        return;
-    }
+  const resizeFactor = k.width() / k.height();
+  if (resizeFactor < 1) {
+    k.camScale(k.vec2(1));
+    return;
+  }
 
-    k.camScale(k.vec2(1.5));
+  k.camScale(k.vec2(1.5));
 }

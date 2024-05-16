@@ -1,6 +1,7 @@
-import { dialogueData, scaleFactor } from "./constants";
+import { getDialogue, scaleFactor } from "./constants";
 import { k } from "./kaboomCtx";
 import { displayDialogue, setCamScale } from "./utils";
+import i18next from './i18n.js';
 
 k.loadSprite("spritesheet", "./spritesheet.png", {
   sliceX: 39,
@@ -58,7 +59,7 @@ k.scene("main", async () => {
           player.onCollide(boundary.name, () => {
             player.isInDialogue = true;
             displayDialogue(
-              dialogueData[boundary.name],
+              boundary.name,
               () => (player.isInDialogue = false)
             );
           });
@@ -147,3 +148,9 @@ k.scene("main", async () => {
 });
 
 k.go("main");
+
+
+// After initializing Kaboom or wherever appropriate
+// Dynamically insert translated text into HTML elements
+document.getElementById('tapClickMovePlaceholder').innerText = i18next.t('tap_click_move');
+document.getElementById('close').innerText = i18next.t('close');
